@@ -132,8 +132,13 @@ generate a concise title that reflects the main topic of the conversation.
 For example, if you ask *"What is the weather like in Barcelona?"*, the title should be something like *"Weather in 
 Barcelona"*.
 
-[ ] **Bonus:** Optimize performance for the `StartConversation` API to make it faster.
+[✅] **Bonus:** Optimize performance for the `StartConversation` API to make it faster.
 
+- Run **title** and **reply** generation in **parallel** → faster responses.
+- **Persist conversation early** to avoid data loss on errors/timeouts.
+- Added **timeouts & cancellation**: 30s request budget, 15s max for title.
+- **Graceful fallback**: if title fails, keep `"Untitled conversation"`.
+- Added **LRU + singleflight caching** for titles → less latency & lower cost.
 ---
 
 ### Task 2: Fix the weather
