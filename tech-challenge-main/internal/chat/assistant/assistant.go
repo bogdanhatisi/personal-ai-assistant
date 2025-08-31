@@ -29,11 +29,41 @@ func (a *Assistant) Title(ctx context.Context, conv *model.Conversation) (string
 
 	slog.InfoContext(ctx, "Generating title for conversation", "conversation_id", conv.ID)
 
-	msgs := make([]openai.ChatCompletionMessageParamUnion, len(conv.Messages))
+	systemPrompt := `You are a title generator.
 
-	msgs[0] = openai.AssistantMessage("Generate a concise, descriptive title for the conversation based on the user message. The title should be a single line, no more than 80 characters, and should not include any special characters or emojis.")
-	for i, m := range conv.Messages {
-		msgs[i] = openai.UserMessage(m.Content)
+TASK
+- Return ONLY a short, descriptive title for the conversation/topic.
+
+FORMAT
+- Output exactly one line with the title text. No quotes, no code blocks, no extra words.
+- Maximum 80 characters.
+- No emojis or unusual symbols.
+- Do NOT answer the question or explain anything.
+
+SPECIAL CASE
+- If the conversation is empty, return: An empty conversation
+
+EXAMPLES
+User: What is the weather like in Barcelona?
+You: Weather in Barcelona
+
+User: How do I add items to a list in Python?
+You: Python list methods
+
+User: Tell me the steps to set up a Postgres replica
+You: Setting up a PostgreSQL replica`
+
+	msgs := []openai.ChatCompletionMessageParamUnion{
+		openai.SystemMessage(systemPrompt),
+	}
+
+	for _, m := range conv.Messages {
+		switch m.Role {
+		case model.RoleUser:
+			msgs = append(msgs, openai.UserMessage(m.Content))
+		case model.RoleAssistant:
+			msgs = append(msgs, openai.AssistantMessage(m.Content))
+		}
 	}
 
 	resp, err := a.cli.Chat.Completions.New(ctx, openai.ChatCompletionNewParams{

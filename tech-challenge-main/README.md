@@ -119,7 +119,7 @@ The more tasks you complete, the better we can assess your skills.
 
 We would like you to spend at least 1 hour on the challenge.
 
-### Task 1: Fix conversation title
+### [✅] Task 1: Fix conversation title
 
 > We recommend starting with this one. This task is relatively easy and requires you to debug the application, allowing you to get familiar with the codebase, and understand how the application works.
 
@@ -132,7 +132,7 @@ generate a concise title that reflects the main topic of the conversation.
 For example, if you ask *"What is the weather like in Barcelona?"*, the title should be something like *"Weather in 
 Barcelona"*.
 
-**Bonus:** Optimize performance for the `StartConversation` API to make it faster.
+[ ] **Bonus:** Optimize performance for the `StartConversation` API to make it faster.
 
 ---
 
