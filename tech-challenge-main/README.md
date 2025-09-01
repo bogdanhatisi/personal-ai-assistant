@@ -27,7 +27,7 @@ provide a more useful experience.
 
 Currently, the assistant can:
 - Answer questions about the current date and time.
-- Provide weather information (though it seems broken).
+- Provide real-time weather information and forecasts from WeatherAPI.
 - Provide information about holidays in Barcelona.
 - Provide general AI assistance.
 
@@ -78,7 +78,12 @@ Start the application:
    ```bash
    export OPENAI_API_KEY=your_openai_api_key
    ```
-2. Use make to start MongoDB and the application. Make sure docker daemon is running.
+2. (Optional) Set your WeatherAPI key for weather functionality:
+   ```bash
+   export WEATHER_API_KEY=your_weather_api_key
+   ```
+   Get a free API key at [WeatherAPI](https://www.weatherapi.com/)
+3. Use make to start MongoDB and the application. Make sure docker daemon is running.
    ```bash
    make up run
    ```
@@ -141,7 +146,7 @@ Barcelona"*.
 - Added **LRU + singleflight caching** for titles → less latency & lower cost.
 ---
 
-### Task 2: Fix the weather
+### [✅] Task 2: Fix the weather
 
 The assistant is supposed to provide weather information, but currently it just says *"the weather is fine."* You need to connect it to a real weather API and return actual weather information (temperature, wind speed, conditions, etc.).
 
@@ -150,6 +155,14 @@ but you need to sign up and get an API key.
 
 **Bonus:** Enable the assistant to provide forecast information as well as current weather.
 
+**Implementation:**
+-  **Weather Service**: Created `internal/chat/assistant/weather.go` with WeatherAPI integration
+-  **Forecast Support**: Up to 14 days of weather forecasts with daily highs/lows
+
+**Setup Required:**
+```bash
+export WEATHER_API_KEY="your_weather_api_key_here"
+```
 ---
 
 ### Task 3: Refactor tools
